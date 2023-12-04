@@ -1,0 +1,1 @@
+(if (string= "This is test" "This is test") (print "HI" ) (print "HO" ))
