@@ -15,6 +15,9 @@ int main(void) {
 
     int indices[] = {3,33,36,82,85,129,132,174,177,196,199,215,218,235};
     long long int seeds[20];
+    
+    long long int paths[170];
+
     long long int vals[7][47][3];
 
     char buffer[bufferLength];
@@ -61,44 +64,66 @@ int main(void) {
         at_line = at_line + 1;
     }
 
-    int i;
-    long long int min = LONG_LONG_MAX;
-    printf("letsgo");
+    
+    long long int end = LONG_LONG_MAX;
+    long long int start = 60000000;
+    printf("letsgo \n");
 
+    long long int ev;
 
-    for (i = 0; i < 10; ++i) {
-        long long int s = seeds[i * 2];
-        long long int e = seeds[i * 2 + 1];
-        long long int v;
-        long long int v_;
-        for (v = 0; v < e; ++v) {
-            v_ = s + v;   
-            int j;
-            for (j = 0; j < 7; ++j) {
-                int len = indices[j * 2 + 1] - indices[j * 2];
-                //printf("LEN %lld \n", len);
-                int k;
-                for (k = 0; k < len; ++k) {
-                    long long int rs = vals[j][k][1];
-                    long long int r = vals[j][k][2];
+    for (ev = start; ev < end; ++ev) {
+        int j;
+        long long int v_ = ev;
+        //printf("%lld \n", v_);
+        for (j = 6; j >= 0; --j) {
+            int len = indices[j * 2 + 1] - indices[j * 2];
 
-                    if (v_ >= rs && v_ <= rs + r) {
-                        v_ = vals[j][k][0] + v_ - rs;
-                        break;
-                    }
+            int k;
+            for (k = 0; k < len; ++k) {
+                long long int rs = vals[j][k][1];
+                long long int rd = vals[j][k][0];
+                long long int r = vals[j][k][2];
+               
+                if (v_ >= rd && v_ <= rd + r) {
+                    //printf("%lld %lld \n", rs, r); 
+
+                    v_ = rs + v_ - rd;
+                    break;
                 }
             }
+        }
+        
+        int k;
+        for (k = 0; k < 10; ++k) {
+            long long int rs = seeds[k * 2];
+            long long int r = seeds[k * 2 + 1];
 
-           if (v_ < min) {
-                min = v_;
+            if (v_ >= rs && v_ <= rs + r) {                      
+                printf("%lld %lld \n", rs, r);
+                printf("%lld \n", v_);
+                printf("%lld \n", ev);
+                return 0;
             }
-
-            printf("FINALLY %lld \n", v);
-        }  
+        }
     }
 
-
-    printf("MINIMUM %lld \n", min);
-
+    printf("nothing");
     fclose(filePointer);
 }
+
+/*long long int translate(long long int value, long long int layer[47][3]) {
+    int len = indices[j * 2 + 1] - indices[j * 2];
+    long long int v_ = value;
+    int k;
+    for (k = 0; k < len; ++k) {
+        long long int rs = layer[k][1];
+        long long int r = layer[k][2];
+
+        if (v_ >= rs && v_ <= rs + r) {                      
+            v_ = layer[k][0] + v_ - rs;
+            break;
+        }
+    }
+
+    return v_;
+}*/
