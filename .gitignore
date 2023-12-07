@@ -3,3 +3,6 @@
 /?/.history
 .history
 */target
+/d1/in.txt
+/d[7-9]/in.txt
+/d[12][0-9]/in.txt
